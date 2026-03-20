@@ -1,4 +1,16 @@
 """CLI entry point for the Ollama autonomous agent."""
+import sys
+
+# Windows: cp932 locale causes surrogate errors in Ollama SDK responses.
+# Re-exec with -X utf8 via python -m agent to force UTF-8 I/O.
+# This covers both `python -m agent` (via __main__.py) and `agent.exe` (pipx).
+if sys.platform == "win32" and sys.flags.utf8_mode == 0:
+    import subprocess
+    result = subprocess.run(
+        [sys.executable, "-X", "utf8", "-m", "agent"] + sys.argv[1:]
+    )
+    sys.exit(result.returncode)
+
 import typer
 from pathlib import Path
 from rich.prompt import Prompt
