@@ -249,7 +249,6 @@ def main(
     )
 
     memory_tools.set_memory_manager(long_mem)
-    log_info(f"Tools:  {[t.name for t in registry.all()]}")
     print_separator()
 
     orchestrator = Orchestrator(
