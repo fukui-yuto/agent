@@ -1,0 +1,52 @@
+# Environment & secrets
+.env
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+*.egg
+dist/
+build/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+.virtualenv/
+
+# Pipenv (Pipfile.lock should be committed for applications)
+# Pipfile.lock  <- intentionally tracked
+
+# Runtime data (agent memory & sessions)
+data/
+!data/.gitkeep
+
+# Claude Code settings
+.claude/
+
+# AGENT.md is project-specific — include it
+# AGENT.md  <- intentionally tracked
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# Pytest
+.pytest_cache/
+.coverage
+htmlcov/
