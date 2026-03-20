@@ -14,7 +14,7 @@ def _safe_path(path: str) -> Path:
     return resolved
 
 
-@tool(name="read_file", description="Read the contents of a file.")
+@tool(name="read_file", description="Read the contents of a file. Use this before editing a file.")
 def read_file(path: str) -> str:
     """
     path: Relative path to the file to read
@@ -27,7 +27,7 @@ def read_file(path: str) -> str:
     return p.read_text(encoding="utf-8", errors="replace")
 
 
-@tool(name="write_file", description="Write content to a file, creating it if it doesn't exist.")
+@tool(name="write_file", description="Write content to a file, creating it (and any parent directories) if needed. Always use this tool when asked to create or modify a file.")
 def write_file(path: str, content: str) -> str:
     """
     path: Relative path to the file to write
