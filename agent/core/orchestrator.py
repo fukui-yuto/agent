@@ -96,6 +96,13 @@ class Orchestrator:
                     log_warning("Empty response from LLM.")
                     content = "応答を生成できませんでした。もう一度お試しください。"
 
+                # Guard: if the model echoed a tool name as text (e.g. "[Calling write_file]"),
+                # treat it as an empty response and keep looping.
+                if content.startswith("[Calling ") and content.endswith("]"):
+                    log_warning(f"Model echoed tool name as text: {content!r}. Retrying.")
+                    self.short_mem.add("assistant", content)
+                    continue
+
                 console.print("[bold blue]Assistant:[/bold blue] ", end="")
                 console.print(content, highlight=False)
 
