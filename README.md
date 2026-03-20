@@ -210,23 +210,19 @@ description: スキルの説明（/skills 一覧に表示）
 
 ---
 
-## 利用可能なツール
+## 利用可能な機能
 
-| ツール | 説明 |
+エージェントは会話の文脈から必要な操作を自律的に判断して実行します。ツール名を指定する必要はありません。
+
+| カテゴリ | できること |
 |---|---|
-| `get_datetime` | 現在の日付・時刻を取得 |
-| `calculate` | 数式を評価（例: `2 ** 10 + 3 * 7`） |
-| `read_file` | ファイルの内容を読み込む |
-| `write_file` | ファイルに内容を書き込む |
-| `list_directory` | ディレクトリの一覧を表示 |
-| `search_files` | グロブパターンでファイルを検索 |
-| `run_python` | Pythonコードを実行して結果を返す |
-| `web_search` | DuckDuckGoでWeb検索 |
-| `fetch_url` | URLのテキストコンテンツを取得 |
-| `remember` | 情報を長期メモリに保存 |
-| `recall` | 長期メモリから関連情報を検索 |
+| ファイル操作 | ファイルの読み書き・作成・ディレクトリ一覧・ファイル検索 |
+| コード実行 | Pythonコードをその場で実行して結果を返す |
+| Web検索 | DuckDuckGoで検索、URLのコンテンツを取得 |
+| 長期メモリ | 情報を記憶・検索（会話をまたいで保持） |
+| ユーティリティ | 日時取得、数式計算 |
 
-> `run_python` は `import os` / `import sys` / `import subprocess` などの危険な操作をブロックします。
+> コード実行は `import os` / `import sys` / `import subprocess` などの危険な操作をブロックします。
 
 ---
 
