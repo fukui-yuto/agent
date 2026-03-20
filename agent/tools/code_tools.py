@@ -10,6 +10,7 @@ _BLOCKED = [
     "import os", "import sys", "import subprocess", "import shutil",
     "__import__", "open(", "exec(", "eval(", "compile(",
     "os.system", "os.popen", "subprocess.", "shutil.rmtree",
+    "input(",
 ]
 
 
