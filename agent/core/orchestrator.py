@@ -19,6 +19,7 @@ from agent.memory.compressor import ContextCompressor
 from agent.core.planner import Planner
 from agent.core.session import SessionManager
 from agent.tools.registry import ToolRegistry
+import re
 from agent.utils.logger import (
     console, log_tool_call, log_tool_result, log_error, log_warning, log_info
 )
@@ -96,10 +97,10 @@ class Orchestrator:
                     log_warning("Empty response from LLM.")
                     content = "応答を生成できませんでした。もう一度お試しください。"
 
-                # Guard: if the model echoed a tool name as text (e.g. "[Calling write_file]"),
+                # Guard: if the model echoed a bare "[Calling X]" with no other content,
                 # treat it as an empty response and keep looping.
-                if content.startswith("[Calling ") and content.endswith("]"):
-                    log_warning(f"Model echoed tool name as text: {content!r}. Retrying.")
+                if re.fullmatch(r"\[Calling \w+\]", content):
+                    log_warning(f"Model echoed bare tool name as text: {content!r}. Retrying.")
                     self.short_mem.add("assistant", content)
                     continue
 

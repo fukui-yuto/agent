@@ -54,12 +54,65 @@ def parse_tool_call_json(content: str) -> Optional[tuple[str, dict]]:
     return name, args
 
 
+def parse_tool_call_from_text(content: str) -> Optional[tuple[str, dict]]:
+    """
+    Fallback: detect when the model outputs tool invocations as plain text.
+    Handles patterns like:
+      [Calling write_file]
+      ```python
+      # filename.py
+      ...code...
+      ```
+    or:
+      [Calling run_python]
+      ```python
+      ...code...
+      ```
+    """
+    call_match = re.search(r"\[Calling (\w+)\]", content)
+    if not call_match:
+        return None
+
+    tool_name = call_match.group(1)
+
+    # Extract the first code block after the [Calling ...] tag
+    after = content[call_match.end():]
+    block_match = re.search(r"```(?:\w+)?\s*(.*?)\s*```", after, re.DOTALL)
+    if not block_match:
+        return None
+
+    code = block_match.group(1).strip()
+
+    if tool_name == "run_python":
+        return ("run_python", {"code": code})
+
+    if tool_name == "write_file":
+        # Try to find filename from first comment line (# filename.py) or backtick mention
+        filename = None
+        first_line = code.splitlines()[0] if code else ""
+        comment_match = re.match(r"#\s*([\w./-]+\.\w+)", first_line)
+        if comment_match:
+            filename = comment_match.group(1)
+        else:
+            name_match = re.search(r"`([\w./-]+\.\w+)`", content)
+            if name_match:
+                filename = name_match.group(1)
+        if not filename:
+            filename = "script.py"
+        return ("write_file", {"path": filename, "content": code})
+
+    return None
+
+
 def parse_tool_call(message: dict) -> Optional[tuple[str, dict]]:
-    """Try native format first, then fallback to JSON parsing."""
+    """Try native format, then JSON fallback, then text-pattern fallback."""
     result = parse_tool_call_native(message)
     if result:
         return result
     content = message.get("content", "")
     if content:
-        return parse_tool_call_json(content)
+        result = parse_tool_call_json(content)
+        if result:
+            return result
+        return parse_tool_call_from_text(content)
     return None
