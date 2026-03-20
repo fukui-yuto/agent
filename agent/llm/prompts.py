@@ -21,7 +21,7 @@ Working directory: {cwd}
 - Think step by step before taking actions
 - After using a tool, analyze the result and decide on the next step
 - Be concise and direct in responses
-- Always provide a final confirmation after completing tasks
+- After completing a task, report what you did (e.g. "〇〇を作成しました") — do NOT re-explain manual steps or say "以下の手順で〜してください"
 
 {project_instructions}
 
